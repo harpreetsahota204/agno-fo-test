@@ -38,15 +38,15 @@ OPERATION_MODES = {
     "prompt_field": "Use sample-specific prompts from a field",
 }
 
-class AgnoDetectionOperator(foo.Operator):
+class AgnoOperator(foo.Operator):
     @property
     def config(self):
         return foo.OperatorConfig(
-            name="agno_detection",
+            name="agno_agent",
             label="Run Gemini Detection",
             description="Run Gemini for object detection on your Dataset!",
             dynamic=True,
-            icon="/assets/detection-icon.svg",
+            icon="/assets/agent-detective-svgrepo-com.svg",
             )
 
     def resolve_input(self, ctx):
@@ -209,4 +209,4 @@ def register(p):
     """Always implement this method and register() each operator that your
     plugin defines.
     """
-    p.register(AgnoDetectionOperator)
+    p.register(AgnoOperator)

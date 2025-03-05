@@ -1,0 +1,9 @@
+name: "@harpreetsahota/agnoagent"
+description: Run Agno Agent on your FiftyOne Dataset
+version: 1.0.0
+fiftyone:
+  version: "*"
+url: https://github.com/harpreetsahota204/agno-fo-test
+license: Apache 2.0
+operators:
+  - agno_agent
