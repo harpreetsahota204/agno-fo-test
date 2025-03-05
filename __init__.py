@@ -80,35 +80,20 @@ class AgnoOperator(foo.Operator):
                 "text_prompt",
                 label="Detection Prompt",
                 description="Prompt to use for all images (e.g., 'Find all cars in this image')",
-                required=True,
+                required=False,
             )
         elif chosen_mode == "prompt_field":
-            # Get list of string fields from the dataset
-            available_fields = []
-            if ctx.dataset is not None:
-                available_fields = [
-                    f for f in ctx.dataset.get_field_schema().keys() 
-                    if ctx.dataset.get_field_schema()[f].endswith("string")
-                ]
-            
-            field_dropdown = types.Dropdown(label="Select field containing prompts")
-            for field in available_fields:
-                field_dropdown.add_choice(field, label=field)
-                
-            inputs.enum(
+            inputs.str(
                 "prompt_field",
-                values=field_dropdown.values(),
                 label="Prompt Field",
-                description="Field that contains prompts for each sample",
-                view=field_dropdown,
-                required=True
+                description="Name of the field that contains detection prompts for each sample",
+                required=False,
             )
 
         inputs.str(
             "system_message",
             label="System Message",
             description="System message that guides the model's behavior.",
-            multiline=True,
             required=True,
         )
 
@@ -118,7 +103,6 @@ class AgnoOperator(foo.Operator):
             label="Output Field",
             description="Name of the field to store the detection results"
         )
-        
         
         inputs.bool(
             "delegate",
