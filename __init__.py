@@ -43,8 +43,8 @@ class AgnoOperator(foo.Operator):
     def config(self):
         return foo.OperatorConfig(
             name="agno_agent",
-            label="Run Gemini Detection",
-            description="Run Gemini for object detection on your Dataset!",
+            label="Agno Agent",
+            description="Run an Agno Agent for object detection on your Dataset!",
             dynamic=True,
             icon="/assets/agent-detective-svgrepo-com.svg",
             )
