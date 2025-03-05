@@ -18,6 +18,7 @@ def _handle_calling(
         system_message,
         text_prompt=None,
         prompt_field=None,
+        verbose=False,
         delegate=False,
         ):
     ctx = dict(dataset=sample_collection)
@@ -28,6 +29,7 @@ def _handle_calling(
         system_message=system_message,
         text_prompt=text_prompt,
         prompt_field=prompt_field,
+        verbose=verbose,
         delegate=delegate,
         )
     return foo.execute_operator(uri, ctx, params=params)
@@ -38,15 +40,15 @@ OPERATION_MODES = {
     "prompt_field": "Use sample-specific prompts from a field",
 }
 
-class AgnoOperator(foo.Operator):
+class AgnoDetectionOperator(foo.Operator):
     @property
     def config(self):
         return foo.OperatorConfig(
-            name="agno_agent",
-            label="Agno Agent",
-            description="Run an Agno Agent for object detection on your Dataset!",
+            name="agno_detection",
+            label="Ageno Agent",
+            description="Run a Gemini powered Agno Agent for object detection on your Dataset!",
             dynamic=True,
-            icon="/assets/agent-detective-svgrepo-com.svg",
+            icon="assets/agent-detective-svgrepo-com.svg",
             )
 
     def resolve_input(self, ctx):
@@ -67,7 +69,7 @@ class AgnoOperator(foo.Operator):
             "operation_mode",
             values=mode_dropdown.values(),
             label="Prompt Mode",
-            description="Select how you want to provide prompts",
+            description="Select how you want to provide detection prompts",
             view=mode_dropdown,
             required=True
         )
@@ -80,20 +82,21 @@ class AgnoOperator(foo.Operator):
                 "text_prompt",
                 label="Detection Prompt",
                 description="Prompt to use for all images (e.g., 'Find all cars in this image')",
-                required=False,
+                required=True,
             )
         elif chosen_mode == "prompt_field":
             inputs.str(
                 "prompt_field",
                 label="Prompt Field",
                 description="Name of the field that contains detection prompts for each sample",
-                required=False,
+                required=True,
             )
 
         inputs.str(
             "system_message",
             label="System Message",
-            description="System message that guides the model's behavior.",
+            description="System message that guides the model's behavior. Must instruct the model to return results in JSON format with 'box_2d' coordinates in a 1000x1000 grid and 'label' fields.",
+            multiline=True,
             required=True,
         )
 
@@ -102,6 +105,15 @@ class AgnoOperator(foo.Operator):
             required=True,
             label="Output Field",
             description="Name of the field to store the detection results"
+        )
+        
+        inputs.bool(
+            "verbose",
+            default=False,
+            required=False,
+            label="Verbose mode",
+            description="Enable detailed logging for debugging",
+            view=types.CheckboxView(),
         )
         
         inputs.bool(
@@ -142,13 +154,16 @@ class AgnoOperator(foo.Operator):
         operation_mode = ctx.params.get("operation_mode")
         system_message = ctx.params.get("system_message")
         output_field = ctx.params.get("output_field")
+        verbose = ctx.params.get("verbose", False)
         
         # Create the AgnoAgent model
         model = AgnoAgent(
             model_id="gemini-2.0-flash",  # Fixed model
             system_message=system_message
         )
-
+        
+        # Set verbose mode
+        model.verbose = verbose
         
         # Run the agent based on operation mode
         if operation_mode == "text_prompt":
@@ -176,6 +191,7 @@ class AgnoOperator(foo.Operator):
             system_message,
             text_prompt=None,
             prompt_field=None,
+            verbose=False,
             delegate=False,
             ):
         return _handle_calling(
@@ -186,6 +202,7 @@ class AgnoOperator(foo.Operator):
             system_message,
             text_prompt,
             prompt_field,
+            verbose,
             delegate,
             )
 
@@ -193,4 +210,4 @@ def register(p):
     """Always implement this method and register() each operator that your
     plugin defines.
     """
-    p.register(AgnoOperator)
+    p.register(AgnoDetectionOperator)
