@@ -4,7 +4,9 @@ A FiftyOne plugin using an Agno agent that enables object detection using Google
 
 ## Installation
 
-**Environment Variable **
+## Setup
+
+Before using the plugin, you'll need to set up your Gemini API key:
    
 1. Set the environment variable before running your Python script:
    ```bash
@@ -43,17 +45,6 @@ fiftyone plugins download https://github.com/harpreetsahota204/agno-fo-test
 To install requirements:
 ```bash
 fiftyone plugins requirements @harpreetsahota/agnoagent --install
-```
-
-## Setup
-
-Before using the plugin, you'll need to set up your Gemini API key:
-
-```python
-import os
-from getpass import getpass
-
-os.environ["GOOGLE_API_KEY"] = getpass("Enter your Gemini API key: ")
 ```
 
 ## Usage
