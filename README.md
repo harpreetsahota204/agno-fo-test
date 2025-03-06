@@ -1,5 +1,7 @@
 # Example Agno Agent (powered by Gemini) Plugin
 
+![](assets/agno_agent_app.gif)
+
 A FiftyOne plugin using an Agno agent that enables object detection using Google's Gemini vision-language model. This plugin provides a user-friendly operator interface to detect objects in images using natural language prompts.
 
 ## Installation
@@ -93,7 +95,7 @@ agno_agent(
 )
 ```
 
-You can also choose to run this as a delegated operation. To do so you must first set the following environment variable (either in terminal via `export` or in Python):
+You can also choose to run this as a delegated operation. To do so you must first set the following environment variable (either in terminal via `export` or in Python) before you instantiate the operator:
 
 ```python
 import os
