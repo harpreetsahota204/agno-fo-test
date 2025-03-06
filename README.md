@@ -4,7 +4,7 @@ A FiftyOne plugin using an Agno agent that enables object detection using Google
 
 ## Installation
 
-## Setup
+## Setup environment variable
 
 Before using the plugin, you'll need to set up your Gemini API key:
    
@@ -31,18 +31,14 @@ Before using the plugin, you'll need to set up your Gemini API key:
    
    os.environ["GOOGLE_API_KEY"] = "your-api-key-here"
    ```
+## Plugin installation
 
-1. First, install the required dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-2. Install the plugin directly from GitHub:
+1.  Install the plugin directly from GitHub:
 ```bash
 fiftyone plugins download https://github.com/harpreetsahota204/agno-fo-test
 ```
 
-To install requirements:
+2. To install requirements:
 ```bash
 fiftyone plugins requirements @harpreetsahota/agnoagent --install
 ```
@@ -87,6 +83,27 @@ agno_agent(
 )
 
 # Method 2: Using a single text prompt for all images
+agno_agent(
+    dataset,
+    operation_mode="text_prompt",
+    output_field="detections",      # where to store results
+    system_message=SYSTEM_MESSAGE,
+    text_prompt="Find all buttons in this image",  # prompt applied to all images
+    verbose=True,                   # enable debugging output
+)
+```
+
+You can also choose to run this as a delegated operation. To do so you must first set the following environment variable (either in terminal via `export` or in Python):
+
+```python
+import os
+
+os.environ['FIFTYONE_ALLOW_LEGACY_ORCHESTRATORS'] = 'true'
+```
+
+Then, in the terminal,  run `fiftyone delegated launch`. When running a delegated operation in a notebook you will need to use the `await` syntax:
+
+```python
 agno_agent(
     dataset,
     operation_mode="text_prompt",
