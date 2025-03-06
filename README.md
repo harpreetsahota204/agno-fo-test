@@ -61,8 +61,26 @@ session = fo.launch_app(dataset)
 
 Then use the "Ageno Agent" operator from the App interface.
 
+## Programmatic Usage
 
-### Programmatic Usage
+### Configuration Options
+
+#### Operation Modes
+
+1. **Field-based Prompts** (`prompt_field`):
+   - Uses sample-specific prompts stored in a dataset field
+   - Specify the field name containing prompts for each image
+
+2. **Single Text Prompt** (`text_prompt`):
+   - Uses the same prompt for all images
+   - Provide one prompt that applies to all samples
+
+### Parameters
+- `operation_mode`: The operation mode you want to use
+- `output_field`: Name of the field where detections will be stored
+- `system_message`: Instructions for the Gemini model
+- `verbose`: Enable detailed logging (default: False)
+- `delegate`: Run on delegated service (default: False)
 
 ```python
 import fiftyone.operators as foo
@@ -118,21 +136,3 @@ await agno_agent(
 )
 ```
 
-## Configuration Options
-
-### Operation Modes
-
-1. **Field-based Prompts** (`prompt_field`):
-   - Uses sample-specific prompts stored in a dataset field
-   - Specify the field name containing prompts for each image
-
-2. **Single Text Prompt** (`text_prompt`):
-   - Uses the same prompt for all images
-   - Provide one prompt that applies to all samples
-
-### Parameters
-- `operation_mode`: The operation mode you want to use
-- `output_field`: Name of the field where detections will be stored
-- `system_message`: Instructions for the Gemini model
-- `verbose`: Enable detailed logging (default: False)
-- `delegate`: Run on delegated service (default: False)
