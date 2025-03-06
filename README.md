@@ -94,6 +94,7 @@ agno_agent(
     verbose=True,                   # enable debugging output
 )
 ```
+## Running Delegated Service
 
 You can also choose to run this as a delegated operation. To do so you must first set the following environment variable (either in terminal via `export` or in Python) before you instantiate the operator:
 
@@ -106,13 +107,14 @@ os.environ['FIFTYONE_ALLOW_LEGACY_ORCHESTRATORS'] = 'true'
 Then, in the terminal,  run `fiftyone delegated launch`. When running a delegated operation in a notebook you will need to use the `await` syntax:
 
 ```python
-agno_agent(
+await agno_agent(
     dataset,
     operation_mode="text_prompt",
     output_field="detections",      # where to store results
     system_message=SYSTEM_MESSAGE,
     text_prompt="Find all buttons in this image",  # prompt applied to all images
     verbose=True,                   # enable debugging output
+    delegate=True
 )
 ```
 
@@ -134,13 +136,3 @@ agno_agent(
 - `system_message`: Instructions for the Gemini model
 - `verbose`: Enable detailed logging (default: False)
 - `delegate`: Run on delegated service (default: False)
-
-## Running Delegated Service
-
-To run detections on a delegated service:
-
-```bash
-fiftyone delegated launch
-```
-
-Then set `delegate=True` in your operator call or enable delegation in the App interface.
